@@ -1,0 +1,142 @@
+
+sterowanie_ramienia_serwa.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000e2  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  000000e2  00000176  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          0000000c  00800060  00800060  00000176  2**0
+                  ALLOC
+  3 .stab         000006cc  00000000  00000000  00000178  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      00000097  00000000  00000000  00000844  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .comment      0000002f  00000000  00000000  000008db  2**0
+                  CONTENTS, READONLY
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
+   4:	20 c0       	rjmp	.+64     	; 0x46 <__bad_interrupt>
+   6:	32 c0       	rjmp	.+100    	; 0x6c <__vector_3>
+   8:	1e c0       	rjmp	.+60     	; 0x46 <__bad_interrupt>
+   a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
+   c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
+   e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
+  10:	1a c0       	rjmp	.+52     	; 0x46 <__bad_interrupt>
+  12:	19 c0       	rjmp	.+50     	; 0x46 <__bad_interrupt>
+  14:	18 c0       	rjmp	.+48     	; 0x46 <__bad_interrupt>
+  16:	17 c0       	rjmp	.+46     	; 0x46 <__bad_interrupt>
+  18:	16 c0       	rjmp	.+44     	; 0x46 <__bad_interrupt>
+  1a:	15 c0       	rjmp	.+42     	; 0x46 <__bad_interrupt>
+  1c:	14 c0       	rjmp	.+40     	; 0x46 <__bad_interrupt>
+  1e:	13 c0       	rjmp	.+38     	; 0x46 <__bad_interrupt>
+  20:	12 c0       	rjmp	.+36     	; 0x46 <__bad_interrupt>
+  22:	11 c0       	rjmp	.+34     	; 0x46 <__bad_interrupt>
+  24:	10 c0       	rjmp	.+32     	; 0x46 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_clear_bss>:
+  32:	20 e0       	ldi	r18, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	01 c0       	rjmp	.+2      	; 0x3c <.do_clear_bss_start>
+
+0000003a <.do_clear_bss_loop>:
+  3a:	1d 92       	st	X+, r1
+
+0000003c <.do_clear_bss_start>:
+  3c:	ac 36       	cpi	r26, 0x6C	; 108
+  3e:	b2 07       	cpc	r27, r18
+  40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
+  42:	44 d0       	rcall	.+136    	; 0xcc <main>
+  44:	4c c0       	rjmp	.+152    	; 0xde <_exit>
+
+00000046 <__bad_interrupt>:
+  46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
+
+00000048 <serwa_int>:
+  48:	87 b3       	in	r24, 0x17	; 23
+  4a:	8e 63       	ori	r24, 0x3E	; 62
+  4c:	87 bb       	out	0x17, r24	; 23
+  4e:	88 b3       	in	r24, 0x18	; 24
+  50:	81 7c       	andi	r24, 0xC1	; 193
+  52:	88 bb       	out	0x18, r24	; 24
+  54:	85 b5       	in	r24, 0x25	; 37
+  56:	88 60       	ori	r24, 0x08	; 8
+  58:	85 bd       	out	0x25, r24	; 37
+  5a:	85 b5       	in	r24, 0x25	; 37
+  5c:	81 60       	ori	r24, 0x01	; 1
+  5e:	85 bd       	out	0x25, r24	; 37
+  60:	80 ea       	ldi	r24, 0xA0	; 160
+  62:	83 bd       	out	0x23, r24	; 35
+  64:	89 b7       	in	r24, 0x39	; 57
+  66:	80 68       	ori	r24, 0x80	; 128
+  68:	89 bf       	out	0x39, r24	; 57
+  6a:	08 95       	ret
+
+0000006c <__vector_3>:
+  6c:	1f 92       	push	r1
+  6e:	0f 92       	push	r0
+  70:	0f b6       	in	r0, 0x3f	; 63
+  72:	0f 92       	push	r0
+  74:	11 24       	eor	r1, r1
+  76:	2f 93       	push	r18
+  78:	3f 93       	push	r19
+  7a:	8f 93       	push	r24
+  7c:	9f 93       	push	r25
+  7e:	80 91 60 00 	lds	r24, 0x0060
+  82:	90 91 61 00 	lds	r25, 0x0061
+  86:	01 96       	adiw	r24, 0x01	; 1
+  88:	90 93 61 00 	sts	0x0061, r25
+  8c:	80 93 60 00 	sts	0x0060, r24
+  90:	20 91 62 00 	lds	r18, 0x0062
+  94:	30 91 63 00 	lds	r19, 0x0063
+  98:	82 17       	cp	r24, r18
+  9a:	93 07       	cpc	r25, r19
+  9c:	10 f0       	brcs	.+4      	; 0xa2 <__vector_3+0x36>
+  9e:	c1 9a       	sbi	0x18, 1	; 24
+  a0:	01 c0       	rjmp	.+2      	; 0xa4 <__vector_3+0x38>
+  a2:	c1 98       	cbi	0x18, 1	; 24
+  a4:	80 91 60 00 	lds	r24, 0x0060
+  a8:	90 91 61 00 	lds	r25, 0x0061
+  ac:	88 3e       	cpi	r24, 0xE8	; 232
+  ae:	93 40       	sbci	r25, 0x03	; 3
+  b0:	21 f4       	brne	.+8      	; 0xba <__vector_3+0x4e>
+  b2:	10 92 61 00 	sts	0x0061, r1
+  b6:	10 92 60 00 	sts	0x0060, r1
+  ba:	9f 91       	pop	r25
+  bc:	8f 91       	pop	r24
+  be:	3f 91       	pop	r19
+  c0:	2f 91       	pop	r18
+  c2:	0f 90       	pop	r0
+  c4:	0f be       	out	0x3f, r0	; 63
+  c6:	0f 90       	pop	r0
+  c8:	1f 90       	pop	r1
+  ca:	18 95       	reti
+
+000000cc <main>:
+  cc:	bd df       	rcall	.-134    	; 0x48 <serwa_int>
+  ce:	78 94       	sei
+  d0:	84 e6       	ldi	r24, 0x64	; 100
+  d2:	90 e0       	ldi	r25, 0x00	; 0
+  d4:	90 93 63 00 	sts	0x0063, r25
+  d8:	80 93 62 00 	sts	0x0062, r24
+  dc:	fb cf       	rjmp	.-10     	; 0xd4 <main+0x8>
+
+000000de <_exit>:
+  de:	f8 94       	cli
+
+000000e0 <__stop_program>:
+  e0:	ff cf       	rjmp	.-2      	; 0xe0 <__stop_program>
